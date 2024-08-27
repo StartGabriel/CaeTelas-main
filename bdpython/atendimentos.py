@@ -90,9 +90,9 @@ def atualizar_user(conn: sqlite3.Connection, nr: int, user_id=None, motivo=None,
     try:
         conn.execute(sql, params)
         conn.commit()
-        print(f"Atualização realizada com sucesso para o registro nr: {nr}")
+        
     except sqlite3.Error as e:
-        print(f"Erro ao atualizar o registro nr: {nr}. Erro: {e}")
+        pass
 
 def deletar_advertencia(conn, numero_advertencia):
     """Deleta um usuário específico na tabela."""

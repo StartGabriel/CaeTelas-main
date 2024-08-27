@@ -142,7 +142,6 @@ def get_obj_center(coordinate_size:Union[List[int],Tuple[int,int]],
     """
     size_obj = [size_objt[0],size_objt[1]]
     center = [int(coordinate_size[0]/2 - size_obj[0]/2),int(coordinate_size[1]/2-size_obj[1]/2)]
-    print("center",center)
     return center
 
 

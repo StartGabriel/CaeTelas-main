@@ -128,9 +128,7 @@ class Admin:
         self.page = 0
     def conectar(self):
         self.cnn = atendimentos.conectar("bdpython/atendimentos.db")
-        
-        
-        
+
     def admin(self):
         self.conectar()
         self.consulta = atendimentos.consultar_todos(self.cnn)
@@ -184,8 +182,8 @@ class Admin:
         self.but_voltar.pack()
         self.but_next_page.pack()
         self.but_return_page.pack()
-            
         self.main_loop()
+        pygame.display.flip()
     def main_loop(self):
         self.loop = True
         while self.loop:
@@ -204,19 +202,11 @@ class Admin:
             pygame.display.flip()
     
     def check(self):
-        print("Botão clicado")
-        self.indes = self.indexx + 1 + self.page
-        print(f"ID do botão: {self.indes}")
-        print(f"Status atual: {self.consulta[self.indes][3]}")
-        
+        self.indes = self.indexx + self.page
         if self.consulta[self.indes][3] == "sim":
-            print("entrou no sim")
-            atendimentos.atualizar_user(self.cnn, self.indes, atendido="não")
-            print(f"{self.consulta[self.indes][3]}")
+            atendimentos.atualizar_user(conn=self.cnn, nr= self.indes+1, atendido="não")
         elif self.consulta[self.indes][3] == "não":
-            print("entrou no nao")
-            atendimentos.atualizar_user(self.cnn, self.indes, atendido="sim")
-        
+            atendimentos.atualizar_user(self.cnn, self.indes+1, atendido="sim")
         self.update_page()
 
         
@@ -235,7 +225,11 @@ class Admin:
         
     def next_page(self):
         self.page+=7
+        if self.page >= len(self.consulta):
+            self.page -= 7
         self.update_page()
     def return_page(self):
         self.page-=7
+        if self.page <= 0:
+            self.page = 0
         self.update_page()
