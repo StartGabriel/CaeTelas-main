@@ -204,19 +204,29 @@ class Admin:
             pygame.display.flip()
     
     def check(self):
-        self.indes = self.indexx+1 + self.page
+        print("Botão clicado")
+        self.indes = self.indexx + 1 + self.page
+        print(f"ID do botão: {self.indes}")
+        print(f"Status atual: {self.consulta[self.indes][3]}")
+        
         if self.consulta[self.indes][3] == "sim":
-            atendimentos.atualizar_user(self.cnn,self.indes,atendido="não")
-        if self.consulta[self.indes][3] == "não":
-            atendimentos.atualizar_user(self.cnn,self.indes,atendido="sim")
-
+            print("entrou no sim")
+            atendimentos.atualizar_user(self.cnn, self.indes, atendido="não")
+            print(f"{self.consulta[self.indes][3]}")
+        elif self.consulta[self.indes][3] == "não":
+            print("entrou no nao")
+            atendimentos.atualizar_user(self.cnn, self.indes, atendido="sim")
+        
         self.update_page()
+
+        
         
     def update_page(self):
-        print("entrou em updates")
-        self.menu.blit(self.window_backup,(0,0))
+        self.menu.blit(self.window_backup, (0, 0))  
         pygame.display.flip()
         self.admin()
+
+
     
     def sair(self):
         from atendimento import AtendimentoTela

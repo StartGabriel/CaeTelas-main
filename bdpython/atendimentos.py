@@ -68,36 +68,36 @@ def consultar_todos(cnn:sqlite3.Connection):
     cursor = cnn.execute(sql)
     return cursor.fetchall()
 
-def atualizar_user(conn:sqlite3.Connection,
-                   nr:int,
-                   user_id= None,
-                   motivo= None,
-                   atendido= None):
-    """Atualiza os dados de um usuário específico na tabela."""
+def atualizar_user(conn: sqlite3.Connection, nr: int, user_id=None, motivo=None, atendido=None):
+    """Atualiza os dados de um atendimento específico na tabela."""
     sql = "UPDATE atendimentos SET "
     params = []
     
-    if user_id:
+    if user_id is not None:
         sql += "id = ?, "
         params.append(user_id)
-    if motivo:
+    if motivo is not None:
         sql += "motivo = ?, "
         params.append(motivo)
-    if atendido:
+    if atendido is not None:
         sql += "atendido = ?"
         params.append(atendido)
-        
-    sql = sql.rstrip(', ')
     
+    sql = sql.rstrip(', ')  # Remove a vírgula final, se existir
     sql += " WHERE nr = ?;"
     params.append(nr)
     
-    conn.execute(sql, params)
-    conn.commit()
+    try:
+        conn.execute(sql, params)
+        conn.commit()
+        print(f"Atualização realizada com sucesso para o registro nr: {nr}")
+    except sqlite3.Error as e:
+        print(f"Erro ao atualizar o registro nr: {nr}. Erro: {e}")
 
 def deletar_advertencia(conn, numero_advertencia):
     """Deleta um usuário específico na tabela."""
     sql = "DELETE FROM advertencia WHERE nr = ?;"
     conn.execute(sql, (numero_advertencia,))
     conn.commit()
+
 
