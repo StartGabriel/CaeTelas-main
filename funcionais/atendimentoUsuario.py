@@ -205,16 +205,17 @@ class Admin:
     
     def check(self):
         self.indes = self.indexx+1 + self.page
-        print(self.indes)
         if self.consulta[self.indes][3] == "sim":
             atendimentos.atualizar_user(self.cnn,self.indes,atendido="não")
-        else:
+        if self.consulta[self.indes][3] == "não":
             atendimentos.atualizar_user(self.cnn,self.indes,atendido="sim")
+
         self.update_page()
         
     def update_page(self):
+        print("entrou em updates")
         self.menu.blit(self.window_backup,(0,0))
-        pygame.display.update()
+        pygame.display.flip()
         self.admin()
     
     def sair(self):

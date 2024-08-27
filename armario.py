@@ -11,7 +11,7 @@ import funcionais.consultarUsuario
 import funcionais.excluirUsuario
 import funcionais.alterarUsuario as alterarUsuario
 import main_menu
-#testando git/testando 2
+
 
 pygame.init()
 
