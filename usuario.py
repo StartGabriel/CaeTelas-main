@@ -108,8 +108,8 @@ class UsuarioTela:
                                             size_title=50)
         
 
-        botoes = [but_consultar_atendimento, but_alterar, but_atendimento, but_incluir, but_voltar]
-        centro_x = button.get_center_button([1000, 600], but_incluir, "j")
+        botoes = [but_consultar_atendimento, but_alterar, but_atendimento, but_voltar]
+        centro_x = button.get_center_button([1000, 600], but_voltar, "j")
         button.alight_buttons([centro_x[0], 150], "y", 10, botoes)
         for botao in botoes:
             botao.pack()

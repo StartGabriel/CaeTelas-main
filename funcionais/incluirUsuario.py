@@ -31,12 +31,16 @@ class Incluir:
         self.main_loop()
         self.incluir(self.retorna[0],self.retorna[1],self.retorna[2])
     def gerar_botoes(self):
+        self.title = tools.insert_text("INSERIR USUARIO","black",50,"white")
+        self.title_mid = tools.get_obj_center(self.window_size,self.title.get_size())
+        self.menu.blit(self.title,(self.title_mid[0],10))
         self.nome = Input(window=self.menu,
-                          size=self.but_size,
+                          size=[750,50],
                           coordinates=[0,0],
                           title="nome",
                           color=self.but_color,
                           color_title=self.but_color_title,)
+        
         self.idade = Input(window=self.menu,
                            size=self.but_size,
                            coordinates=[0,0],
@@ -45,14 +49,15 @@ class Incluir:
                            color_title=self.but_color_title,)
         
         self.email = Input(window=self.menu,
-                           size=self.but_size,
+                           size=[800,50],
                            coordinates=[0,0],
                            title="email",
                            color=self.but_color,
                            color_title=self.but_color_title,)
         self.inputs = [self.nome, self.idade, self.email]
         self.buts_input = [self.nome,self.idade,self.email]
-        button.alight_buttons(self.but_mid,"y",10,self.buts_input)
+        for inputs in self.buts_input:
+            inputs.coordinates = tools.get_obj_center(self.window_size,inputs.size)
         
     def main_loop(self):
         for inp in self.inputs:

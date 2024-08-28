@@ -94,7 +94,7 @@ class AtendimentoTela:
                                            background="images/placa.webp",
                                             size_title=50)
         but_consultar_solicitacoes = Button(window=self.__menu,
-                                           title="consultar",
+                                           title="solicitações",
                                            size=[400, 50],
                                            color=None,
                                            coordinates=[0, 0],

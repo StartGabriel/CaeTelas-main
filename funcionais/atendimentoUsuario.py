@@ -119,7 +119,7 @@ class Admin:
         self.window_background = "images/pantano.jpg"
         self.menu = Window(self.window_size,self.window_color,self.window_background).pack()
         self.window_backup = self.menu.copy()
-        self.but_size = [900,50]
+        self.but_size = [500,30]
         self.but_color = "white"
         self.but_colot_title = "black"
         self.but_mid = tools.get_obj_center(self.window_size,self.but_size)
@@ -130,23 +130,31 @@ class Admin:
         self.cnn = atendimentos.conectar("bdpython/atendimentos.db")
 
     def admin(self):
+        self.title = tools.insert_text("SOLICITAÇÕES","gold",30,"black")
+        self.title_mid = tools.get_obj_center(self.window_size,self.title.get_size())
+        self.menu.blit(self.title,(self.title_mid[0],10))
         self.conectar()
         self.consulta = atendimentos.consultar_todos(self.cnn)
         self.gerar_botoes()
         
     def gerar_botoes(self):
         self.buts = []
-        self.coordinate_init = 10
+        self.coordinate_init = 50
         
 
         for dados in range(self.page,self.page+7):
             try:
+                if self.consulta[dados][3] == "não":
+                    self.color = "silver"
+                else:
+                    self.color = "olive"
                 self.buts.append(Button(window=self.menu,
                                     title=f"SOLICITACÃO: {self.consulta[dados][0]}, ID: {self.consulta[dados][1]}, MOTIVO: {self.consulta[dados][2]}, CONCLUIDA: {self.consulta[dados][3]}",
                                     size=self.but_size,
-                                    color=self.but_color,
+                                    color=self.color,
                                     coordinates=self.but_mid,
                                     color_title=self.but_colot_title,
+                                    size_title=25,
                                     command=self.check))
             except:
                 pass
