@@ -16,6 +16,7 @@ class Advertencia:
         self.window = DefauthWindow()
         self.menu = Window(self.window.size,self.window.color, self.window.background).pack()
         self.__button = button.DefauthButton()
+        
     
     def user(self):
         self.conectar()
@@ -25,6 +26,7 @@ class Advertencia:
     def conectar(self):
         self.cnn_user = User.conectar("bdpython/user.db")
         self.cnn_advertencia = advertencia.conectar("bdpython/advertencia.db")
+        advertencia.criar_tabela(self.cnn_advertencia)
         
     def gerar_botoes(self):
         self.but_mid = tools.get_obj_center(self.window.size,self.__button.size)
@@ -68,7 +70,7 @@ class Advertencia:
     def get_id(self):
         self.but_input.pack()
         self.id = self.loop_input()
-
+        self.veryfi = self.validar(self.id)
         
     def get_motivo(self):
         self.inp_mid = tools.get_obj_center(self.window.size,[700,50])
@@ -111,7 +113,30 @@ class Advertencia:
                     self.loop=False
             pygame.display.flip()
         return self.retornar
-
+    def validar(self,id):
+        from funcionais.aviso import Avisos
+        self.id_consulta= User.consultar_user(self.cnn_user,id)
+        if self.id_consulta is not None:
+            self.confirmar()
+        
+        else:
+            self.false = Avisos(self.__button.size,[self.but_mid[0],10],"ERRO","black","gold")
+            self.false.mensagem(f"user id: {id} NOT FOUND")
+            self.sair()
+        
+    def confirmar(self):
+        from funcionais.aviso import Avisos
+        self.confirmado = Avisos(self.__button.size,[self.but_mid[0],10],"CONFIRMAR","black","gold")
+        self.title_confirmation = tools.insert_text(text=f"adicionar advertencia ao id:{self.id} nome:{self.id_consulta[1]}",
+                                                    color="olive",
+                                                    size=30,
+                                                    background_color="black")
+        self.title_confirmation_mid = tools.get_obj_center(self.window.size,self.title_confirmation.get_size())
+        self.menu.blit(self.title_confirmation,(self.title_confirmation_mid[0],200))
+        pygame.display.flip()
+        self.confirmado = self.confirmado.create_confirmation_buttons()
+        
+        
     def sair(self):
         from atendimento import AtendimentoTela
         self.app = AtendimentoTela()
