@@ -45,14 +45,21 @@ class Advertencia:
                               command=self.excluir,
                               color_title=self.__button.color_title)
         
+        self.but_consultar = Button(window=self.menu,
+                              title="CONSULTAR",
+                              size=self.__button.size,
+                              color=self.__button.color,
+                              coordinates=[0,0],
+                              command=self.consultar,
+                              color_title=self.__button.color_title)
         self.but_input= Input(window=self.menu,
                             size=self.__button.size,
-                            coordinates=[self.but_mid[0],400],
+                            coordinates=[self.but_mid[0],500],
                             title="ID",
                             color=self.__button.color,
                             color_title=self.__button.color_title)
         
-        self.buts = [self.but_add,self.but_remover]
+        self.buts = [self.but_add,self.but_remover,self.but_consultar]
         button.alight_buttons(self.but_mid,"y",10,self.buts)
         for but in self.buts:
             but.pack()
@@ -60,17 +67,33 @@ class Advertencia:
         
     def incluir(self):
         self.get_id()
-        self.get_motivo()
-        advertencia.inserir_advertencia(self.cnn_advertencia,self.id,self.motivo)
+        self.veryfi = self.validar(self.id)
+        if self.veryfi == True:
+            self.confirmar()
+            if self.confirmado == True:
+                self.get_motivo()
+                advertencia.inserir_advertencia(self.cnn_advertencia,self.id,self.motivo)
+        self.sair()
         
     def excluir(self):
         self.get_id()
         advertencia.deletar_advertencia(self.cnn_advertencia,self.id)
     
+    def consultar(self):
+        self.get_id()
+        from funcionais.aviso import Avisos
+        self.nr_adivertencia = advertencia.consultar_adivertencia(self.cnn_advertencia,self.id)
+        if self.nr_adivertencia:
+            self.user_adivertencia = User.consultar_user(self.cnn_user, self.nr_adivertencia[0][1])
+            self.consultado = Avisos(self.__button.size,[self.but_mid[0],10],"USER CONSULTADO","black","gold")
+            self.consultado.mensagem(f"NÚMERO: {self.id}, ALUNO: {self.user_adivertencia[1]}, MOTIVO: {self.nr_adivertencia[0][2]}")
+        else:
+            self.consultado = Avisos(self.__button.size,[self.but_mid[0],10],"USER CONSULTADO","black","gold")
+            self.consultado.mensagem(f"ID {self.id} NÃO ENCONTRADO OU REMOVIDO")
     def get_id(self):
         self.but_input.pack()
         self.id = self.loop_input()
-        self.veryfi = self.validar(self.id)
+        
         
     def get_motivo(self):
         self.inp_mid = tools.get_obj_center(self.window.size,[700,50])
@@ -117,7 +140,7 @@ class Advertencia:
         from funcionais.aviso import Avisos
         self.id_consulta= User.consultar_user(self.cnn_user,id)
         if self.id_consulta is not None:
-            self.confirmar()
+            return True
         
         else:
             self.false = Avisos(self.__button.size,[self.but_mid[0],10],"ERRO","black","gold")
@@ -135,6 +158,7 @@ class Advertencia:
         self.menu.blit(self.title_confirmation,(self.title_confirmation_mid[0],200))
         pygame.display.flip()
         self.confirmado = self.confirmado.create_confirmation_buttons()
+        print(self.confirmado)
         
         
     def sair(self):

@@ -95,14 +95,14 @@ class Atendimento:
             pygame.display.flip()
             
     def __jogos(self):
-        self.inserir_solicitacao(1)
+        self.inserir_solicitacao("Jogos")
         
     
     def __reclamacoes(self):
-        self.inserir_solicitacao(2)
+        self.inserir_solicitacao("Reclamações")
     
     def __ajuda(self):
-        self.inserir_solicitacao(3)
+        self.inserir_solicitacao("Ajuda")
     
     def voltar(self):
         self.loop = False
@@ -119,7 +119,7 @@ class Admin:
         self.window_background = "images/pantano.jpg"
         self.menu = Window(self.window_size,self.window_color,self.window_background).pack()
         self.window_backup = self.menu.copy()
-        self.but_size = [500,30]
+        self.but_size = [600,30]
         self.but_color = "white"
         self.but_colot_title = "black"
         self.but_mid = tools.get_obj_center(self.window_size,self.but_size)

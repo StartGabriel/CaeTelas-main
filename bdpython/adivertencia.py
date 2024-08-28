@@ -46,7 +46,7 @@ def inserir_advertencia(conn:sqlite3.Connection,
     conn.execute(sql, (id, motivo))
     conn.commit()
 
-def consultar_user(conn:sqlite3.Connection, user_id:int):
+def consultar_adivertencia(conn:sqlite3.Connection, user_id:int):
     """Consulta as advertencias do usuario
 
     Args:
@@ -56,7 +56,7 @@ def consultar_user(conn:sqlite3.Connection, user_id:int):
     Returns:
         list: retorna uma lista com o numero da advertencia, id do user, e motivo da advertencia
     """
-    sql = "SELECT * FROM advertencia WHERE id = ?;"
+    sql = "SELECT * FROM advertencia WHERE nr = ?;"
     cursor = conn.execute(sql, (user_id,))
     return cursor.fetchall()
 

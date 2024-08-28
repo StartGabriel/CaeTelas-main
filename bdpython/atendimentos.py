@@ -22,7 +22,7 @@ def criar_tabela(conn:sqlite3.Connection):
     CREATE TABLE IF NOT EXISTS atendimentos (
         nr INTEGER PRIMARY KEY AUTOINCREMENT,
         id INTEGER NOT NULL,
-        motivo INTEGER NOT NULL,
+        motivo TEXT NOT NULL,
         atendido TEXT NOT NULL
     );
     """
