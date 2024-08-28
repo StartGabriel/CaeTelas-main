@@ -7,7 +7,8 @@ import pygame
 import sys
 pygame.init()
 class ConsultarDados:
-    def __init__(self):
+    
+    def __init__(self,window:pygame.Surface=None):
         self.size_window = [1000,600]
         self.background_window = "images/pantano.jpg"
         self.menu = Window(size= self.size_window, color="white", background= self.background_window).pack()
@@ -44,6 +45,7 @@ class ConsultarDados:
                             color_title=self.color_title_input)
             self.input_id.pack()
             self.id = self.loop()
+            self.atendimento = True
             
     def loop(self):
         self.loops = True
@@ -80,6 +82,10 @@ class ConsultarDados:
         if self.verify == False:
             self.sair()
     def sair(self):
-        from atendimento import AtendimentoTela
-        self.app = AtendimentoTela()
-        self.app.run()
+        self.menu.blit(self.window_backup,(0,0))
+        self.loops = False
+    
+        if self.atendimento == True: #gambiarra temporaria, ou não
+            from atendimento import AtendimentoTela
+            self.app = AtendimentoTela()
+            self.app.run()
