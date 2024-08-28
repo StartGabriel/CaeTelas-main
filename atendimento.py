@@ -49,6 +49,11 @@ class AtendimentoTela:
     def __voltar(self):
         run = main_menu.MainMenu()
         run.run()
+        
+    def __advertencias(self):
+        from funcionais.advertenciaUsuario import Advertencia
+        advertencias = Advertencia()
+        advertencias.user()
 
     def __consultar_solicitacoes(self):
         from funcionais.atendimentoUsuario import Admin
@@ -103,6 +108,16 @@ class AtendimentoTela:
                                            background="images/placa.webp",
                                             size_title=50)
         
+        but_consultar_adivertencias = Button(window=self.__menu,
+                                           title="adivertencias",
+                                           size=[400, 50],
+                                           color=None,
+                                           coordinates=[0, 0],
+                                           command=self.__advertencias,
+                                           color_title="black",
+                                           background="images/placa.webp",
+                                            size_title=50)
+        
         but_voltar = Button(window=self.__menu,
                                      title="voltar",
                                      size=[400, 50],
@@ -114,7 +129,7 @@ class AtendimentoTela:
                                             size_title=50)
         
         
-        botoes = [but_consultar_atendimento, but_alterar, but_excluir, but_incluir, but_consultar_solicitacoes, but_voltar]
+        botoes = [but_consultar_atendimento, but_alterar, but_excluir, but_incluir, but_consultar_solicitacoes,but_consultar_adivertencias ,but_voltar]
         centro_x = button.get_center_button([1000, 600], but_incluir, "j")
         button.alight_buttons([centro_x[0],150], "y", 10, botoes)
         for botao in botoes:

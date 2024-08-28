@@ -18,17 +18,19 @@ class Advertencia:
         self.__button = button.DefauthButton()
     
     def user(self):
-        self.gerar_botoes()
         self.conectar()
+        self.gerar_botoes()
+        self.sair()
         
     def conectar(self):
         self.cnn_user = User.conectar("bdpython/user.db")
-        self.cnn_advertencia = User.conectar("bdpython/advertencia.db")
+        self.cnn_advertencia = advertencia.conectar("bdpython/advertencia.db")
         
     def gerar_botoes(self):
+        self.but_mid = tools.get_obj_center(self.window.size,self.__button.size)
         self.but_add = Button(window=self.menu,
                               title="ADICIONAR",
-                              size=self.__button.size,
+                              size=self.__button.size, 
                               color=self.__button.color,
                               coordinates=[0,0],
                               command=self.incluir,
@@ -40,27 +42,45 @@ class Advertencia:
                               coordinates=[0,0],
                               command=self.excluir,
                               color_title=self.__button.color_title)
-        self.inp_id = Input(window=self.menu,
+        
+        self.but_input= Input(window=self.menu,
                             size=self.__button.size,
-                            coordinates=[0,0],
+                            coordinates=[self.but_mid[0],400],
                             title="ID",
                             color=self.__button.color,
                             color_title=self.__button.color_title)
+        
         self.buts = [self.but_add,self.but_remover]
-        self.but_mid = tools.get_obj_center(self.window.size,self.__button.size)
         button.alight_buttons(self.but_mid,"y",10,self.buts)
         for but in self.buts:
             but.pack()
         self.main_loop()
+        
     def incluir(self):
-        self.validar()
+        self.get_id()
+        self.get_motivo()
+        advertencia.inserir_advertencia(self.cnn_advertencia,self.id,self.motivo)
+        
     def excluir(self):
-        self.validar
+        self.get_id()
+        advertencia.deletar_advertencia(self.cnn_advertencia,self.id)
     
-    def validar(self):
-        button.alight_buttons(self.but_mid,"y",10,[self.buts[0],self.buts[1],self.inp_id])
-        self.inp_id.pack()
-        self.main_loop()
+    def get_id(self):
+        self.but_input.pack()
+        self.id = self.loop_input()
+
+        
+    def get_motivo(self):
+        self.inp_mid = tools.get_obj_center(self.window.size,[700,50])
+        self.but_input = Input(window=self.menu,
+                            size=[700,50],
+                            coordinates=[self.inp_mid[0],400],
+                            title="MOTIVO",
+                            color=self.__button.color,
+                            color_title=self.__button.color_title)
+        self.but_input.pack()
+        self.motivo = self.loop_input()
+        
     def main_loop(self):
         self.loop = True
         while self.loop:
@@ -72,8 +92,27 @@ class Advertencia:
                     self.pos = pygame.mouse.get_pos()
                     for but in self.buts:
                         but.run(self.pos)
-                    self.id = self.inp_id.run(self.pos)
-                    self.inp_id.clear_window()
+
                     
             pygame.display.flip()
-        
+        self.but_input.clear_window()
+        return self.retornar
+                    
+    def loop_input(self): #gambiarra provisória, ou não
+        self.loop = True
+        while self.loop:
+            for events in pygame.event.get():
+                if events.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if events.type == pygame.MOUSEBUTTONDOWN:
+                    self.pos = pygame.mouse.get_pos()
+                    self.retornar = self.but_input.run(self.pos)
+                    self.loop=False
+            pygame.display.flip()
+        return self.retornar
+
+    def sair(self):
+        from atendimento import AtendimentoTela
+        self.app = AtendimentoTela()
+        self.app.run()
