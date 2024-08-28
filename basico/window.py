@@ -1,6 +1,7 @@
 import pygame
 from typing import Union,List,Tuple
 import basico.tools as tools
+from abc import ABC
 
 class Window:
     def __init__(self,
@@ -33,3 +34,9 @@ class Window:
             self.background = pygame.transform.scale(self.background,self.size)
             self.window.blit(self.background,self.START_COORDINATES)
         return self.window
+
+class DefauthWindow(ABC):
+    def __init__(self):
+        self.size = [1000,600]
+        self.color = "black"
+        self.background = "images/pantano.jpg"

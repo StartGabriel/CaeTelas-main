@@ -2,6 +2,7 @@ import pygame
 from typing import Union, List, Tuple
 
 import basico.tools as tools
+from abc import ABC
 
 class Button:
     #começo de tudo, algumas funções estão uma zona, mas adicionei docstrings para não ficar tão confuso
@@ -169,3 +170,10 @@ def get_center_button(size_window: Union[List[int], Tuple[int, int]],
     if tags == "j":
         center = (int(size_window[0] / 2 - button.size[0] / 2), int(size_window[1] / 2 - button.size[1] / 2))
         return center
+
+class DefauthButton(ABC):
+    def __init__(self):
+        self.size = [300,50]
+        self.color = "white"
+        self.color_title = "black"
+        
